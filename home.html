@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - CINEWORLDS</title>
+    <style>
+        body { background-color: #0b0b0b; color: #fff; font-family: sans-serif; padding: 50px; }
+        header { display: flex; justify-content: space-between; align-items: center; }
+        .sign-out-btn { background: #E50914; color: #fff; padding: 10px 20px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to CINEWORLDS</h1>
+        <span id="user-display">Loading...</span>
+        <button class="sign-out-btn" id="logout-btn">Sign Out</button>
+    </header>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBusEQOaEP8ATvNCNA8NZNSZSQQFBrHbWY",
+            authDomain: "cineworlds-lk.firebaseapp.com",
+            projectId: "cineworlds-lk",
+            storageBucket: "cineworlds-lk.firebasestorage.app",
+            messagingSenderId: "713662813047",
+            appId: "1:713662813047:web:53c92085fe72526b0cc772",
+            measurementId: "G-XN55EJ9P1T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const analytics = getAnalytics(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('user-display').textContent = "Hi, " + (user.displayName || "User");
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
